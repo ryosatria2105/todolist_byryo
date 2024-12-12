@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List with Table</title>
+    <style>
+        /* General body styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #061c76, #470245);
+            color: rgb(255, 255, 255);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            box-sizing: border-box;
+        }
+
+        /* Container styling */
+        .container {
+            background: #030431;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 800px;
+            animation: popUp 0.5s ease-out;
+        }
+
+        /* Header styling */
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #ecf0f1;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Form styling */
+        .todo-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .todo-form input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+            font-size: 16px;
+        }
+
+        .todo-form button {
+            padding: 10px 20px;
+            border: none;
+            background: #148e06;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease;
+        }
+
+        .todo-form button:hover {
+            background: #135405;
+        }
+
+        /* Table styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #6c7576;
+        }
+
+        th {
+            background: #2c3e50;
+        }
+
+        tr:hover {
+            background: #3c5a72;
+            transition: background 0.3s ease;
+        }
+
+        .completed {
+            text-decoration: line-through;
+            color: #95a5a6;
+        }
+
+        .action-buttons button {
+            margin-right: 5px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .action-buttons .complete {
+            background: #27ae60;
+            color: white;
+        }
+
+        .action-buttons .delete {
+            background: #e74c3c;
+            color: white;
+        }
+
+        /* Hover effects for action buttons */
+        .action-buttons button:hover {
+            transform: scale(1.1);
+        }
+
+        /* Keyframes for animations */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes popUp {
+            0% {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Button styling for Save and Reset */
+        #save-button, #reset-button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 30px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.3s ease, background 0.3s ease;
+            box-shadow: 0 4px 6px rgba(150, 9, 9, 0.2);
+            margin-right: 10px;
+        }
+
+        /* Save button */
+        #save-button {
+            background: linear-gradient(45deg, #17ad12, #17ad12);
+        }
+
+        #save-button:hover {
+            background: linear-gradient(45deg, #075f1a, #075f1a);
+            transform: translateY(-2px);
+        }
+
+        /* Reset button */
+        #reset-button {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+        }
+
+        #reset-button:hover {
+            background: linear-gradient(45deg, #c0392b, #e74c3c);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive design for mobile devices */
+        @media (max-width: 768px) {
+            .todo-form {
+                flex-direction: column;
+            }
+
+            .todo-form input[type="text"], .todo-form button {
+                width: 100%;
+            }
+
+            table {
+                font-size: 14px;
+            }
+
+            th, td {
+                padding: 8px;
+            }
+
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 20px;
+            }
+
+            .todo-form input[type="text"], .todo-form button {
+                font-size: 14px;
+                padding: 8px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 6px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>To-Do List by Ryo</h1>
+        <form class="todo-form" id="todo-form">
+            <input type="text" id="todo-input" placeholder="add a new task ..." required />
+            <button type="submit">Add</button>
+        </form>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <button id="save-button">Save</button>
+            <button id="reset-button">Reset</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>NO</th>
+                    <th>Tugas</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="todo-table">
+                <!-- Rows will be added here dynamically -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const todoForm = document.getElementById("todo-form");
+        const todoInput = document.getElementById("todo-input");
+        const todoTable = document.getElementById("todo-table");
+        const saveButton = document.getElementById("save-button");
+        const resetButton = document.getElementById("reset-button");
+
+        let todos = JSON.parse(localStorage.getItem("todos")) || [];
+
+        function renderTodos() {
+            todoTable.innerHTML = "";
+            todos.forEach((todo, index) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td class="${todo.completed ? 'completed' : ''}">${todo.text}</td>
+                    <td>${todo.completed ? "Completed" : "Active"}</td>
+                    <td class="action-buttons">
+                        <button class="complete" onclick="toggleComplete(${index})">✔</button>
+                        <button class="delete" onclick="deleteTodo(${index})">✖</button>
+                    </td>
+                `;
+                todoTable.appendChild(row);
+            });
+        }
+
+        function toggleComplete(index) {
+            todos[index].completed = !todos[index].completed;
+            renderTodos();
+        }
+
+        function deleteTodo(index) {
+            todos.splice(index, 1);
+            renderTodos();
+        }
+
+        function saveTodos() {
+            localStorage.setItem("todos", JSON.stringify(todos));
+        }
+
+        function resetTodos() {
+            todos = [];
+            renderTodos();
+            saveTodos();
+        }
+
+        todoForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            todos.push({ text: todoInput.value, completed: false });
+            todoInput.value = "";
+            renderTodos();
+        });
+
+        saveButton.addEventListener("click", () => {
+            saveTodos();
+            alert("To-Do List Saved!");
+        });
+
+        resetButton.addEventListener("click", () => {
+            const confirmReset = confirm("Are you sure you want to reset the list?");
+            if (confirmReset) {
+                resetTodos();
+                alert("To-Do List has been reset!");
+            }
+        });
+
+        renderTodos();
+    </script>
+</body>
+</html>
